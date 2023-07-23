@@ -1,1 +1,1 @@
-# crime-classification
+# death-classification
