@@ -1,0 +1,120 @@
+---
+title: "Final Practice Python"
+author: "Katie Mears"
+date: "2023-07-20"
+output: html_document
+---
+
+
+```{python}
+import pandas as pd
+from sklearn.model_selection import train_test_split
+import seaborn as sns
+import matplotlib.pyplot as plt
+import statsmodels.api as sm
+```
+
+```{python}
+
+death_data = pd.read_csv('2015_data.csv')
+
+# Display the first few rows of the data
+print(death_data.head())
+```
+
+```{python}
+column_titles = death_data.columns
+print(column_titles)
+```
+```{python}
+data_description_all = death_data.describe(include='all')
+print(data_description_all)
+```
+```{python}
+missing_values_count = death_data.isnull().sum()
+print(missing_values_count)
+```
+
+```{python}
+total_rows = death_data.shape[0]
+percent_missing = (missing_values_count / total_rows) * 100
+print(percent_missing)
+```
+
+```{python}
+total_missing_values = death_data.isnull().sum().sum()
+total_elements = death_data.size
+total_percent_missing = (total_missing_values / total_elements) * 100
+print("Total percentage of missing data in the dataset: {:.2f}%".format(total_percent_missing))
+```
+
+
+
+```{python}
+# Create Representative Sample from 2015 Population file 
+
+# Identify the column on which you want to perform stratified sampling
+# stratify_column = 'manner_of_death' 
+
+# Drop rows with missing values in the stratify column
+# death_data = death_data.dropna(subset=[stratify_column])
+
+# Desired sample size
+# sample_size = 50000
+
+# Perform stratified sampling to get a representative sample
+# sampled_data_death, _ = train_test_split(death_data, train_size=sample_size, stratify=death_data[stratify_column])
+
+# Display the first few rows of the sampled data
+# print(sampled_data_death.head())
+
+```
+
+
+```{python}
+desired_columns = ['education_2003_revision', 'month_of_death', 'sex', 'place_of_death_and_decedents_status', 'marital_status', 'day_of_week_of_death', 'injury_at_work', 'manner_of_death', 'method_of_disposition', 'autopsy', 'activity_code', 'place_of_injury_for_causes_w00_y34_except_y06_and_y07_', 'icd_code_10th_revision', '358_cause_recode', '113_cause_recode', '39_cause_recode', 'race','detail_age']
+
+# Keep only the specified columns from the original Data Frame 
+new_death = death_data[desired_columns]
+
+# Display the first few rows of the modified Data Frame
+print(new_death.head())
+
+```
+
+```{python}
+total_missing_values2 = new_death.isnull().sum().sum()
+total_elements2 = new_death.size
+total_percent_missing2 = (total_missing_values2 / total_elements2) * 100
+print("Total percentage of missing data in the sample dataset: {:.2f}%".format(total_percent_missing2))
+```
+
+```{python}
+missing_values_count2 = new_death.isnull().sum()
+total_rows2 = new_death.shape[0]
+percent_missing = (missing_values_count2 / total_rows2) * 100
+print(percent_missing)
+```
+
+
+
+```{python}
+# Select only numeric columns for the correlation analysis
+numeric_columns = new_death.select_dtypes(include='number')
+death_correlation_matrix = numeric_columns.corr()
+
+# Display the correlation matrix
+print(death_correlation_matrix)
+```
+
+
+```{python}
+# Plot the correlation matrix as a heatmap
+plt.figure(figsize=(10, 8))
+sns.heatmap(death_correlation_matrix, annot=True, cmap='coolwarm', fmt='.2f', linewidths=0.5)
+plt.title('Death Correlation Matrix')
+plt.show()
+```
+
+
+
